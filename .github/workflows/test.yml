@@ -1,26 +1,35 @@
-name: Test Job
-on: push
+name: hello-github-actions
+# 触发 workflow 的事件
+on:
+  push:
+    # 分支随意
+    branches:
+      - main
 jobs:
+    # 一个job任务，任务名为build
     build:
+        #运行在最新版ubuntu系统中
         runs-on: ubuntu-latest
+        #步骤合集
         steps:
+            #新建一个名为checkout_actions的步骤
+            - name: checkout_actions
+            #使用checkout@v2这个action获取源码
+            uses: actions/checkout@v2
             - name: Checkout
             uses: actions/checkout@master
             
-            - name: Use Node.js ${{ matrix.node-version }}
+
+            #使用建一个名为setup-node的步骤
+            - name: setup-node
+            #使用setup-node@v1这个action
             uses: actions/setup-node@v1
+            #指定某个action 可能需要输入的参数
             with:
                 node-version: '14.15.0'
-            - run: npm run init
-            - run: npm run build --if-present
 
-            - name: checkout
-              uses: actions/checkout@master
-            - name: install script
-              run: npm install
-            - name: package win
-              run: npm run package-win
-            - name: package mac
-              run: npm run package-win
-            - name: ls script
-              run: ls la dist
+            - name: npm install and build
+            #执行执行某个shell命令或脚本
+            run: |
+                npm install
+                npm run package-win

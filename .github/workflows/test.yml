@@ -16,10 +16,10 @@ jobs:
               uses: actions/checkout@master
             
 
-            - name: setup node
-                uses: actions/setup-node@v1
-                with:
-                    node-version: '14.15.0'
+            # - name: setup node
+            #     uses: actions/setup-node@v1
+            #     with:
+            #         node-version: '14.15.0'
 
             - name: npm install and build
                 run: |

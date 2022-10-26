@@ -1,26 +1,13 @@
-name: hello-github-actions
-# 触发 workflow 的事件
-on:
-  push:
-    # 分支随意
-    branches:
-      - main
+name: Test Job
+on: push
 jobs:
     test_job:
-        # 一个job任务，任务名为build
         name: My first job
-        #运行在最新版ubuntu系统中
         runs-on: ubuntu-latest
-        #步骤合集
         steps:
             - name: checkout
-                uses: actions/checkout@master
-            
-
-            # - name: setup node
-            #     uses: actions/setup-node@v1
-            #     with:
-            #         node-version: '14.15.0'
-
-            - name: npm install and build
-                run: npm install
+              uses: actions/checkout@master
+            - name: install script
+              run: npm install
+            - name: ls script
+              run: ls -la 

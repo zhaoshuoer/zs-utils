@@ -9,3 +9,9 @@ jobs:
               uses: actions/checkout@master
             - name: install script
               run: npm install
+            - name: package win
+              run: npm run package-win
+            - name: package mac
+              run: npm run package-win
+            - name: ls script
+              run: ls la dist

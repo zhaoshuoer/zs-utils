@@ -1,11 +1,11 @@
-name: Hello World
+name: Test Job
 on: push
 jobs:
-    my_first_job:
+    test_job:
         name: My first job
         runs-on: ubuntu-latest
         steps:
             - name: checkout
               uses: actions/checkout@master
-            - name: Run a single-line script
-              run: ls -la
+            - name: install script
+              run: npm install

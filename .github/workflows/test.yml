@@ -5,10 +5,10 @@ jobs:
         name: install node
         runs-on: ubuntu-latest
         steps:
-        - name: setup-node
-            uses: actions/setup-node@v3
-            with:
-                node-version: '14'
+            - name: setup-node
+                uses: actions/setup-node@v3
+                with:
+                    node-version: '14'
     test_job:
         name: My first job
         runs-on: ubuntu-latest

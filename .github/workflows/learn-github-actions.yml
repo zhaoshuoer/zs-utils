@@ -2,20 +2,35 @@ name: learn-github-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 on: [push]
 jobs:
-    check-bats-version:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-node@v3
-              with:
-                node-version: "14.15.0"
-            
-            - name: Check out repository code
-              uses: actions/checkout@v3
-            - run: npm install 
-            - run: npm run package-win
-              env:
-                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - run: npm run package-mac
-              env:
-                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  check-bats-version:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2019, macos-10.15]
+    steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: "14.15.0"
+        
+        - name: Check out repository code
+          uses: actions/checkout@v3
+        - run: npm install 
+
+        - name: build windows app
+          if: matrix.os == 'windows-2019'
+          run: |
+            npm run package-win
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: build mac app
+          if: matrix.os == 'macos-10.15'
+          run: |
+            npm run package-mac
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: ls dist
+          run: ls -la dist

@@ -74,13 +74,15 @@ jobs:
 
         - name: 9. 创建GitHub Release
           id: create_release
-          uses: actions/create-release@latest
+          - uses: vedantmgoyal2009/winget-releaser@v1
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
-            tag_name: v${{steps.version.outputs.value}}
-            release_name: v${{steps.version.outputs.value}}
-            body: ${{steps.description.outputs.content}}
-            draft: false
-            prerelease: false
-            allowUpdates: true
+            token: ${{ secrets.GITHUB_TOKEN }}
+            version: ${{ github.event.release.tag_name }}
+            # tag_name: v${{steps.version.outputs.value}}
+            # release_name: v${{steps.version.outputs.value}}
+            # body: ${{steps.description.outputs.content}}
+            # draft: false
+            # prerelease: false
+            # allowUpdates: true

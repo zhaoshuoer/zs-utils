@@ -83,3 +83,4 @@ jobs:
             body: ${{steps.description.outputs.content}}
             draft: false
             prerelease: false
+            allowUpdates: true

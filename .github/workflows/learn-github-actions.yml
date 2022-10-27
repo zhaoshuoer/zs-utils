@@ -51,10 +51,35 @@ jobs:
             path: dist
 
         # step7: create release
-        - name: release
-          uses: softprops/action-gh-release@v1
-          if: startsWith(github.ref, 'refs/tags/')
+        # - name: release
+        #   uses: softprops/action-gh-release@v1
+        #   if: startsWith(github.ref, 'refs/tags/')
+        #   with:
+        #     files: "dist/**"
+        #   env:
+        #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: 6. 读取当前版本号
+          id: version
+          uses: ashley-taylor/read-json-property-action@v1.0
           with:
-            files: "dist/**"
+            path: ./package.json
+            property: version
+
+        - name: 7. 读取描述文件
+          id: description
+          uses: juliangruber/read-file-action@v1
+          with:
+            path: ./description.txt
+
+        - name: 9. 创建GitHub Release
+          id: create_release
+          uses: actions/create-release@latest
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            tag_name: v${{steps.version.outputs.value}}
+            release_name: v${{steps.version.outputs.value}}
+            body: ${{steps.description.outputs.content}}
+            draft: false
+            prerelease: false

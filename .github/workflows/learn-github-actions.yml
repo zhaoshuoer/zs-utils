@@ -31,6 +31,24 @@ jobs:
             npm run package-mac
           env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+        # step5: cleanup artifacts in dist_electron
+        - name: cleanup artifacts
+          run: |
+            npx rimraf "dist/!(*.exe|*.dmg)"
+        
+        # step6: upload artifacts
+        - name: upload artifacts
+          uses: actions/upload-artifact@v2
+          with:
+            name: ${{ matrix.os }}
+            path: dist
 
-        - name: ls dist
-          run: ls -la dist
+        # step7: create release
+        - name: release
+          uses: softprops/action-gh-release@v1
+          if: startsWith(github.ref, 'refs/tags/')
+          with:
+            files: "dist/**"
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

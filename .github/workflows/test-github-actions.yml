@@ -26,7 +26,6 @@ jobs:
         - name: upload artifacts
           uses: actions/upload-artifact@v2
           with:
-            name: ${{ matrix.os }}
             path: dist
 
         - name: 6. 读取当前版本号

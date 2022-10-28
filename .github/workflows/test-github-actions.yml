@@ -22,10 +22,10 @@ jobs:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
         
-        - name: 将编译后的文件上传到 artifact
-          uses: actions/upload-artifact@v3
-          with:
-            path: dist/*
+        # - name: 将编译后的文件上传到 artifact
+        #   uses: actions/upload-artifact@v3
+        #   with:
+        #     path: dist/*
 
         - name: 读取当前版本号
           id: version
@@ -63,5 +63,5 @@ jobs:
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }} 
             asset_path: dist/烁儿工具集-${{ steps.version.outputs.value }}.dmg
-            asset_name: 烁儿工具集-v${{ steps.version.outputs.value }}.dmg
+            asset_name: zsUtils-v${{ steps.version.outputs.value }}.dmg
             asset_content_type: application/dmg

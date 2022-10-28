@@ -11,7 +11,7 @@ jobs:
             node-version: "14.15.0"
         
         - name: clone 最新的代码并安装所有的第三方依赖
-          # uses: actions/checkout@v3
+        - uses: actions/checkout@v3
           run: npm install 
 
         - name: 执行打包，产出 dmg 文件

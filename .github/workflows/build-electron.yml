@@ -1,6 +1,10 @@
 name: GitHub Actions 打包 Electron 程序并上传至 Release
 run-name: zsUtils build
-on: [push]
+on: 
+  push:
+    branches:
+      - main
+      - 'releases/**'
 jobs:
   zsUtils-Electron-Build:
     runs-on: macos-10.15

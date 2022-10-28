@@ -1,0 +1,55 @@
+name: learn-github-actions
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
+jobs:
+  check-bats-version:
+    runs-on: ${{ macos-10.15 }}
+    steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: "14.15.0"
+        
+        - name: Check out repository code
+          uses: actions/checkout@v3
+        - run: npm install 
+
+        - name: build mac app
+          run: npm run package-mac
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+        - name: cleanup artifacts for macosZ
+          run: npx rimraf "dist/!(*.dmg)"
+        
+        # step6: upload artifacts
+        - name: upload artifacts
+          uses: actions/upload-artifact@v2
+          with:
+            name: ${{ matrix.os }}
+            path: dist
+
+        - name: 6. 读取当前版本号
+          id: version
+          uses: ashley-taylor/read-json-property-action@v1.0
+          with:
+            path: ./package.json
+            property: version
+
+        - name: 7. 读取描述文件
+          id: description
+          uses: juliangruber/read-file-action@v1
+          with:
+            path: ./description.txt
+
+        - name: 9. 创建GitHub Release
+          id: create_release
+          uses: actions/create-release@latest
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            tag_name: v${{ github.run_number }}
+            release_name: v${{ github.run_number }}
+            body: ${{steps.description.outputs.content}}
+            draft: false
+            prerelease: false

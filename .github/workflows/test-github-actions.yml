@@ -1,4 +1,4 @@
-name: learn-github-actions
+name: GitHub Actions 打包 Electron 程序并上传至 Release
 run-name: ${{ github.actor }} is learning GitHub Actions
 on: [push]
 jobs:

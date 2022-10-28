@@ -40,9 +40,12 @@ module.exports = defineConfig({
 					icon: "public/icons/icon.ico" // 程序的图标
 				},
 				nsis: {
+					artifactName: '${productName}-win-x64-${version}.${ext}',// 打包输出的文件名称
 					oneClick: false, //是否一键安装，默认为true
 					language: "2052", //安装语言，2052对应中文
 					perMachine: true, //为当前系统的所有用户安装该应用程序
+					createDesktopShortcut: true, // 创建桌面图标
+					createStartMenuShortcut: true, // 创建开始菜单图标
 					allowToChangeInstallationDirectory: true, //允许用户选择安装目录
 					deleteAppDataOnUninstall: true // 当程序卸载时同时删除程序的数据
 				}

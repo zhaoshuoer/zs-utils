@@ -2,8 +2,12 @@ name: GitHub Actions 打包 Electron 程序并上传至 Release
 run-name: zsUtils build
 on: [push]
 jobs:
-  check-bats-version:
-    runs-on: macos-10.15
+  zsUtils-Electron-Build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2019, macos-10.15]
     steps:
         - name: 安装指定的 NodeJs v14.15.0
           uses: actions/setup-node@v3
@@ -16,8 +20,17 @@ jobs:
         - name: 安装所有的第三方依赖
           run: npm install 
 
-        - name: 执行打包，产出 dmg 文件
-          run: npm run package-mac
+        - name: 打包 windows 安装程序
+          if: matrix.os == 'windows-2019'
+          run: |
+            npm run package-win
+          env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: 打包 MacOs 安装程序
+          if: matrix.os == 'macos-10.15'
+          run: |
+            npm run package-mac
           env:
             GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -34,7 +47,7 @@ jobs:
           with:
             path: ./description.txt
 
-        - name: 创建GitHub Release
+        - name: 创建 GitHub Release
           id: create_release
           uses: actions/create-release@latest
           env:
@@ -46,7 +59,7 @@ jobs:
             draft: false
             prerelease: false
 
-        - name: Upload Release Asset
+        - name: 上传 Mac 平台的安装程序至 GitHub Release
           id: upload-release-asset 
           uses: actions/upload-release-asset@v1
           env:
@@ -56,3 +69,14 @@ jobs:
             asset_path: dist/zsUtils-${{ steps.version.outputs.value }}.dmg
             asset_name: zsUtils-v${{ steps.version.outputs.value }}.dmg
             asset_content_type: application/dmg
+
+        - name: 上传 Win 平台的安装程序至 GitHub Release
+          id: upload-release-asset 
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }} 
+            asset_path: dist/zsUtils-win-x64${{ steps.version.outputs.value }}.exe
+            asset_name: zsUtils-win-x64-v${{ steps.version.outputs.value }}.exe
+            asset_content_type: application/exe

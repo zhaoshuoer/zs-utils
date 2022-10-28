@@ -12,7 +12,7 @@ jobs:
         
         - name: clone 最新的代码
           uses: actions/checkout@v3
-          
+
         - name: 安装所有的第三方依赖
         - run: npm install 
 
@@ -27,27 +27,38 @@ jobs:
           with:
             path: dist/*
 
-        # - name: 读取当前版本号
-        #   id: version
-        #   uses: ashley-taylor/read-json-property-action@v1.0
-        #   with:
-        #     path: ./package.json
-        #     property: version
+        - name: 读取当前版本号
+          id: version
+          uses: ashley-taylor/read-json-property-action@v1.0
+          with:
+            path: ./package.json
+            property: version
 
-        # - name: 读取此次发版的描述文件
-        #   id: description
-        #   uses: juliangruber/read-file-action@v1
-        #   with:
-        #     path: ./description.txt
+        - name: 读取此次发版的描述文件
+          id: description
+          uses: juliangruber/read-file-action@v1
+          with:
+            path: ./description.txt
 
-        # - name: 9. 创建GitHub Release
-        #   id: create_release
-        #   uses: actions/create-release@latest
-        #   env:
-        #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        #   with:
-        #     tag_name: v${{ github.run_number }}
-        #     release_name: v${{ github.run_number }}
-        #     body: ${{steps.description.outputs.content}}
-        #     draft: false
-        #     prerelease: false
+        - name: 创建GitHub Release
+          id: create_release
+          uses: actions/create-release@latest
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            tag_name: v${{ steps.version.outputs.version }}
+            release_name: v${{ steps.version.outputs.version }}
+            body: ${{steps.description.outputs.content}}
+            draft: false
+            prerelease: false
+
+        - name: Upload Release Asset
+          id: upload-release-asset 
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }} 
+            asset_path: ./烁儿工具集-0.1.0.dmg
+            asset_name: 烁儿工具集-0.1.0.dmg
+            asset_content_type: application/dmg

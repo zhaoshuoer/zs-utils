@@ -2,7 +2,7 @@
 	"name": "zs-utils",
 	"author": "shuoer",
 	"description": "这是一个日常办公的工具集程序",
-	"version": "0.1.2",
+	"version": "0.1.0",
 	"private": true,
 	"scripts": {
 		"serve": "vue-cli-service serve",

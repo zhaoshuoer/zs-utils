@@ -55,17 +55,27 @@ jobs:
             draft: false
             prerelease: false
 
-        - name: 上传 Mac 平台的安装程序至 GitHub Release
+        - name: 上传 Mac 平台的安装版程序至 GitHub Release
           uses: actions/upload-release-asset@v1
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             upload_url: ${{ steps.create_release.outputs.upload_url }} 
             asset_path: dist/zsUtils-${{ steps.version.outputs.value }}.dmg
+            asset_name: zsUtils-v${{ steps.version.outputs.value }}-setup.dmg
+            asset_content_type: application/dmg
+
+        - name: 上传 Mac 平台的绿色版程序至 GitHub Release
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }} 
+            asset_path: dist/mac/zsUtils.dmg
             asset_name: zsUtils-v${{ steps.version.outputs.value }}.dmg
             asset_content_type: application/dmg
 
-        - name: 上传 Win 平台的安装程序至 GitHub Release
+        - name: 上传 Win 平台的绿色版程序至 GitHub Release
           uses: actions/upload-release-asset@v1
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -73,4 +83,14 @@ jobs:
             upload_url: ${{ steps.create_release.outputs.upload_url }} 
             asset_path: dist/zsUtils-win-x64-${{ steps.version.outputs.value }}.exe
             asset_name: zsUtils-win-x64-v${{ steps.version.outputs.value }}.exe
+            asset_content_type: application/exe
+
+        - name: 上传 Win 平台的安装版程序至 GitHub Release
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }} 
+            asset_path: dist/zsUtils-win-x64-${{ steps.version.outputs.value }}-setup.exe
+            asset_name: zsUtils-win-x64-v${{ steps.version.outputs.value }}-setup.exe
             asset_content_type: application/exe

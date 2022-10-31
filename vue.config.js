@@ -37,10 +37,11 @@ module.exports = defineConfig({
 				win: {
 					target: ["nsis", "portable"], // 打包的类型
 					verifyUpdateCodeSignature: false, // 禁掉程序的签名验证
-					icon: "public/icons/icon.ico" // 程序的图标
+					icon: "public/icons/icon.ico", // 程序的图标
+					artifactName: '${productName}-win-x64-${version}.${ext}',// 打包输出的文件名称
 				},
 				nsis: {
-					artifactName: '${productName}-win-x64-${version}.${ext}',// 打包输出的文件名称
+					artifactName: '${productName}-win-x64-${version}-setup.${ext}',// 打包输出的文件名称
 					oneClick: false, //是否一键安装，默认为true
 					language: "2052", //安装语言，2052对应中文
 					perMachine: true, //为当前系统的所有用户安装该应用程序

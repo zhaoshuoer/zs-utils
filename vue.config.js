@@ -12,7 +12,7 @@ module.exports = defineConfig({
 				},
 				// Mac 平台相对应的打包配置
 				mac: {
-					target: ["dmg"],
+					target: ["dmg","zip"],
 					icon: "public/icons/icon.icns", // 程序的图标
 					category: "public.app-category.utilities"
 				},
